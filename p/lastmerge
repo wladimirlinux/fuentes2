@@ -1,0 +1,20 @@
+[PVE-User] backup to PBS: unable to acquire lock on snapshot directory	|2021-10-07T10:09:38Z
+[PVE-User] PVE 7 bnx2x driver crash with pve-kernel-5.11.22-5-pve	|2021-10-07T08:42:01Z
+Problem: High ICMP ping response time	|2021-10-07T08:15:16Z
+Resolved in 3m 0s: High ICMP ping response time	|2021-10-07T08:15:10Z
+Problem: Interface wlan1(): Link down	|2021-10-07T08:13:16Z
+Resolved in 9m 26s: IED SONIA AHUMADA - PRINCIPAL has been restarted (uptime &lt; 10m)	|2021-10-07T08:13:14Z
+Resolved in 9m 17s: IED DENIS HERRERA DE VILLA - SEDE PRINCIPAL has been restarted (uptime &lt; 10m)	|2021-10-07T08:13:10Z
+Resolved in 9m 32s: IED EVARDO TURIZO PALENCIA has been restarted (uptime &lt; 10m)	|2021-10-07T08:12:43Z
+Resolved in 9m 33s: IED JOSE MARIA VELAZ - SEDE PRINCIPAL has been restarted (uptime &lt; 10m)	|2021-10-07T08:12:40Z
+Resolved in 9m 28s: IED LA ESMERALDA - SEDE PRINCIPAL has been restarted (uptime &lt; 10m)	|2021-10-07T08:12:36Z
+Resolved in 1m 0s: High ICMP ping response time	|2021-10-07T08:12:09Z
+Resolved in 5m 59s: High ICMP ping response time	|2021-10-07T08:11:58Z
+Resolved in 4m 0s: Interface wlan1(): Link down	|2021-10-07T08:11:52Z
+Resolved in 5m 0s: High ICMP ping response time	|2021-10-07T08:11:37Z
+Resolved in 33m 0s: Interface wlan1(): Link down	|2021-10-07T08:11:27Z
+Problem: Interface ether2(): Link down	|2021-10-07T08:09:55Z
+Resolved in 2m 0s: High ICMP ping response time	|2021-10-07T08:09:25Z
+Resolved in 4h 54m 0s: Interface wlan1(): Link down	|2021-10-07T08:08:29Z
+Resolved in 5m 2s: High ICMP ping response time	|2021-10-07T08:06:29Z
+Resolved in 6m 2s: High ICMP ping response time	|2021-10-07T08:06:21Z

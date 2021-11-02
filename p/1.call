@@ -1,0 +1,5 @@
+MaxRetries: 2
+RetryTime: 60
+WaitTime: 30
+application: Playback
+data: /path/to/sound/file.wav

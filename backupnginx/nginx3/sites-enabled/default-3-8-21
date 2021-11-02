@@ -1,0 +1,289 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+                if ($http_user_agent ~ ProxyChecker/1.0) {
+                    return 403;
+                 }
+
+	root /var/www/html;
+
+	server_name _;
+
+	location / {
+	}
+
+
+        location /api-envio {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /api-prueba {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /callblasting {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+        location /testhablame {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /api-saldo {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /labsms {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /p1 {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+        location /smsapi {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+        location /smshttpapi {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+        location /zycoo {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /ucm {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+
+	location ~ /\.ht {
+		deny all;
+	        access_log off;
+                log_not_found off;
+
+	}
+}
+
+
+server {
+                if ($http_user_agent ~ ProxyChecker/1.0) {
+                    return 403;
+                 }
+
+	root /var/www/html;
+    server_name proditanques.no-ip.org; # managed by Certbot
+
+
+	location / {
+	}
+
+
+        location /api-envio {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /api-prueba {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /callblasting {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+        location /testhablame {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /api-saldo {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /labsms {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /p1 {
+
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+        location /smsapi {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+        location /smshttpapi {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+        location /zycoo {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+        location /ucm {
+                try_files $uri $uri/ =404;
+                auth_basic "Restricted";
+                auth_basic_user_file /etc/nginx/.htpasswd;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    }
+
+
+	location ~ /\.ht {
+		deny all;
+	        access_log off;
+                log_not_found off;
+
+	}
+
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/proditanques.no-ip.org/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/proditanques.no-ip.org/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}server {
+    if ($host = proditanques.no-ip.org) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+	listen 80 ;
+	listen [::]:80 ;
+    server_name proditanques.no-ip.org;
+    return 404; # managed by Certbot
+
+
+}

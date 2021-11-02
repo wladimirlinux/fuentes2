@@ -1,0 +1,299 @@
+# may/18/2019 22:09:38 by RouterOS 6.44.3
+# software id = KZH4-5PQ7
+#
+# model = 750
+# serial number = 4678025A94E5
+/interface ethernet
+set [ find default-name=ether1 ] comment=_______WAN_______
+set [ find default-name=ether2 ] comment=\
+    "________-Ether2 LAN  USUARIO____192.168.2.0/24" loop-protect=off
+/ip kid-control
+add name=prueba
+/ip pool
+add name=dhcp_pool0 ranges=192.168.2.41-192.168.2.100
+/ip dhcp-server
+add address-pool=dhcp_pool0 disabled=no interface=ether2 lease-time=1d name=\
+    dhcp1
+/queue tree
+add comment="______B  A  J  A  D  A _____________" max-limit=10M name=bajada \
+    parent=global priority=1
+add comment="___________S  U  B  I  D  A________" max-limit=3M name=subida \
+    parent=ether1 priority=1
+add comment="______Cola de Servidores______" limit-at=8M max-limit=10M name=\
+    servidores packet-mark=pack_servidores parent=bajada priority=2 queue=\
+    pcq-download-default
+add comment="_____Cola de familia_priv______" limit-at=8M max-limit=10M name=\
+    familia_priv packet-mark=pack_conn_familia_priv parent=bajada priority=3 \
+    queue=pcq-download-default
+add comment="________Cola del resto_______" limit-at=128 max-limit=512 name=\
+    resto packet-mark=pack_conn_resto parent=bajada priority=4 queue=default
+add comment="______Cola de DNS_________" limit-at=1M max-limit=10M name=dns \
+    packet-mark=pack_dns_udp,pack_dns_tcp parent=familia_priv priority=1 \
+    queue=pcq-download-default
+add comment="_____Cola de telefonia______" limit-at=10M max-limit=10M name=\
+    voip packet-mark=pack_voip parent=familia_priv priority=2 queue=\
+    pcq-download-default
+add comment="_____Cola de navegacion______" limit-at=10M max-limit=10M name=\
+    navegacion packet-mark=pack_navegacion parent=familia_priv priority=3 \
+    queue=pcq-download-default
+add comment="______Cola de ssh_________" limit-at=1M max-limit=10M name=ssh \
+    packet-mark=pack_ssh parent=familia_priv priority=4 queue=\
+    pcq-download-default
+add comment="______Cola de NTP_________" limit-at=1M max-limit=10M name=ntp \
+    packet-mark=pack_ntp parent=familia_priv priority=5 queue=\
+    pcq-download-default
+add comment="______Cola de resto_Familia_________" limit-at=64 max-limit=128 \
+    name=resto_traficofamilia packet-mark=pack_conn_resto parent=familia_priv \
+    priority=7 queue=pcq-download-default
+add comment=_VOIP___ limit-at=1536k max-limit=2M name=voip_subida \
+    packet-mark=pack_voip parent=subida priority=1 queue=pcq-upload-default
+add comment=_dns___ limit-at=64 max-limit=1M name=dns_subida packet-mark=\
+    pack_dns_udp,pack_dns_tcp parent=subida priority=2 queue=\
+    pcq-upload-default
+add comment=_ssh___ limit-at=2M max-limit=2M name=subida_ssh packet-mark=\
+    pack_ssh parent=subida priority=3 queue=pcq-upload-default
+add comment=_navegacion___ limit-at=2M max-limit=2M name=subida_navegacion \
+    packet-mark=pack_navegacion parent=subida priority=4 queue=\
+    pcq-upload-default
+add comment=_ntp___ limit-at=128 max-limit=128 name=ntp1 packet-mark=pack_ntp \
+    parent=subida priority=5 queue=pcq-upload-default
+add comment=_RESTO___ limit-at=16 max-limit=16 name=RESTO packet-mark=\
+    pack_conn_resto parent=subida priority=6 queue=pcq-download-default
+/system logging action
+set 3 remote=192.168.2.6
+/ip address
+add address=192.168.0.15/24 interface=ether1 network=192.168.0.0
+add address=192.168.2.1/24 interface=ether2 network=192.168.2.0
+/ip arp
+add address=192.168.2.3 interface=ether2 mac-address=00:09:55:58:5B:28
+add address=192.168.0.1 interface=ether1 mac-address=F0:F2:49:28:8E:12
+add address=192.168.2.6 interface=ether2 mac-address=02:81:79:62:C3:EE
+/ip cloud
+set ddns-update-interval=1d update-time=no
+/ip dhcp-server lease
+add address=192.168.2.50 client-id=1:7c:3:ab:74:9e:17 comment=\
+    "celular de adrian" mac-address=7C:03:AB:74:9E:17 server=dhcp1
+add address=192.168.2.42 client-id=1:f8:28:19:c1:2d:85 comment=\
+    "mi maquina de hablame" mac-address=F8:28:19:C1:2D:85 server=dhcp1
+add address=192.168.2.43 client-id=1:8c:84:1:12:1d:d6 comment=TABLEANDROID \
+    mac-address=8C:84:01:12:1D:D6 server=dhcp1
+add address=192.168.2.44 comment=t61wifi mac-address=00:22:69:9D:DD:40 \
+    server=dhcp1
+/ip dhcp-server network
+add address=192.168.2.0/24 dns-server=192.168.2.1 gateway=192.168.2.1 \
+    ntp-server=192.168.2.1
+/ip dns
+set allow-remote-requests=yes servers=8.8.8.8
+/ip dns static
+add address=192.168.2.10 name=upgrades.counterpath.com
+add address=192.168.2.7 name=proxmox
+add address=192.168.2.3 name=zycoo
+add address=192.168.2.2 name=1043nd
+add address=192.168.2.6 name=orangepi
+add address=192.168.2.4 name=ata
+add address=192.168.2.2 comment="__probar conectividad___" name=\
+    dns.msftncsi.com
+add address=192.168.2.1 comment="____time android____" name=time.android.com
+add address=192.168.2.1 comment="conectividad de android" name=\
+    connectivitycheck.gstatic.com
+add address=192.168.2.2 name=www.265.com
+add address=190.24.112.125 comment="pbx de hablame" name=\
+    hablamecolombia.3cx.co
+/ip firewall address-list
+add address=192.168.2.0/24 comment="_________LAN de casa________" list=casa
+add address=190.24.112.122-190.24.112.126 comment=\
+    "_______LISTA BLANCA HABLAME____" list=listablanca
+add address=sip.abcomunicar.com comment="_____________________________________\
+    _________________________LISTA DE SERVIDORES DE TELEFONIA_________________\
+    ___________" list=telefonia
+add address=192.168.2.2-192.168.2.40 comment=_________LAN___Servidores_______ \
+    list=servidores_lan
+add address=192.168.2.41-192.168.2.70 comment=_________priveligiados_______ \
+    list=familia_priv
+add address=192.168.2.71-192.168.2.253 comment=______resto________ list=resto
+add address=192.168.2.0/24 list=listablanca
+add address=190.60.246.177-190.60.246.180 list=listablanca
+add address=sip.abcomunicar.com comment=_________LAN___Servidores_______ \
+    list=servidores_lan
+add address=5.62.41.147 list=bloqueosip
+/ip firewall filter
+add action=drop chain=input comment="_________BLOQUEO SIP________" \
+    dst-address-list=bloqueosip
+add action=accept chain=ICMP comment="Reglas ICMP" icmp-options=0:0-255 \
+    limit=5,5:packet protocol=icmp
+add action=accept chain=ICMP icmp-options=3:3 limit=5,5:packet protocol=icmp
+add action=accept chain=ICMP icmp-options=3:4 limit=5,5:packet protocol=icmp
+add action=accept chain=ICMP icmp-options=8:0-255 limit=5,5:packet protocol=\
+    icmp
+add action=accept chain=ICMP icmp-options=11:0-255 limit=5,5:packet protocol=\
+    icmp
+add action=drop chain=ICMP protocol=icmp
+add action=accept chain=input comment=\
+    "IN - Aceptar conexiones establecidas y relacionadas" connection-state=\
+    established,related
+add action=drop chain=input comment="IN - Descartar conexiones invalidas" \
+    connection-state=invalid
+add action=drop chain=input comment="IN - Bloquear escaneo de puertos" \
+    protocol=tcp psd=10,3s,3,1
+add action=accept chain=input dst-port=53 in-interface=ether2 protocol=tcp \
+    src-address-list=casa
+add action=accept chain=input dst-port=53 in-interface=ether2 protocol=udp \
+    src-address-list=casa
+add action=tarpit chain=input comment="Ataque DoS" connection-limit=3,32 \
+    protocol=tcp src-address-list=!listablanca
+add action=add-src-to-address-list address-list=black_list \
+    address-list-timeout=1d chain=input comment="Deteccion ataque DoS" \
+    connection-limit=10,32 protocol=tcp
+add action=jump chain=input comment="IN - Salto a reglas ICMP" jump-target=\
+    ICMP protocol=icmp
+add action=accept chain=input comment="ip permitidas" src-address-list=\
+    listablanca
+add action=drop chain=input comment="IN - Descartar todo lo demas"
+add action=accept chain=forward comment=\
+    "FW - Permitir conexiones establecidas y relacionadas" connection-state=\
+    established,related
+add action=drop chain=forward comment="FW - Rechazar conexiones invalidas" \
+    connection-state=invalid
+add action=jump chain=forward comment="Salto al chain ICMP" jump-target=ICMP \
+    protocol=icmp
+add action=accept chain=forward comment="FW - IP's permitidas navegacion" \
+    src-address-list=casa
+add action=fasttrack-connection chain=forward connection-state=\
+    established,related
+add action=accept chain=forward connection-state=established,related
+add action=drop chain=forward connection-state=invalid
+add action=add-src-to-address-list address-list=AtaqueSIP \
+    address-list-timeout=15s chain=forward comment=\
+    "_________bloqueo sip_________" connection-state=new dst-port=5060 \
+    in-interface=ether1 protocol=udp src-address=0.0.0.0/0
+/ip firewall mangle
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION DNS UDP____________________" \
+    new-connection-mark=conn_dns_udp passthrough=yes port=53 protocol=udp
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion navegacion" connection-mark=conn_dns_udp \
+    new-packet-mark=pack_dns_udp passthrough=no
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION DNS TCP____________________" \
+    new-connection-mark=conn_dns_tcp passthrough=yes port=53 protocol=tcp
+add action=mark-packet chain=prerouting comment="marca de paquete 53 tcp" \
+    connection-mark=conn_dns_tcp new-packet-mark=pack_dns_tcp passthrough=no
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION VOIP____________________" \
+    new-connection-mark=conn_voip passthrough=yes port=\
+    3470,4569-4570,5060,5090,10000-20000 protocol=udp
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION VOIP____________________" \
+    new-connection-mark=conn_voip passthrough=yes port=5001,5060,5090 \
+    protocol=tcp
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion voip" connection-mark=conn_voip \
+    new-packet-mark=pack_voip passthrough=no
+add action=mark-connection chain=prerouting comment="_____________________MARC\
+    A DE CONEXION de navegacion____________________" new-connection-mark=\
+    conn_navegacion passthrough=yes port=80,443 protocol=tcp
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion navegacion" connection-mark=conn_navegacion \
+    new-packet-mark=pack_navegacion passthrough=no
+add action=mark-connection chain=prerouting comment="_____________________MARC\
+    A DE CONEXION de ssh-winbox____________________" new-connection-mark=\
+    conn_ssh passthrough=yes port=22,446-448,8291 protocol=tcp
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion ssh-winbox" connection-mark=conn_ssh \
+    new-packet-mark=pack_ssh passthrough=no
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION de ntp____________________" \
+    new-connection-mark=conn_ntp passthrough=yes port=123 protocol=udp
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion ntp" connection-mark=conn_ntp \
+    new-packet-mark=pack_ntp passthrough=no
+add action=mark-connection chain=prerouting comment="_____________________MARC\
+    A DE CONEXION de conn_servidores____________________" \
+    new-connection-mark=conn_servidores passthrough=yes src-address-list=\
+    servidores_lan
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion servidores" connection-mark=conn_servidores \
+    new-packet-mark=pack_servidores passthrough=no
+add action=mark-connection chain=prerouting comment="_____________________MARC\
+    A DE CONEXION de conn_familia_priv____________________" \
+    new-connection-mark=conn_familia_priv passthrough=yes src-address-list=\
+    familia_priv
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion familia_priv" connection-mark=\
+    conn_familia_priv new-packet-mark=pack_conn_familia_priv passthrough=no
+add action=mark-connection chain=prerouting comment=\
+    "_____________________MARCA DE CONEXION del resto____________________" \
+    new-connection-mark=conn_resto passthrough=yes
+add action=mark-packet chain=prerouting comment=\
+    "marca de paquete de conexion resto" connection-mark=conn_resto \
+    new-packet-mark=pack_conn_resto passthrough=no
+/ip firewall nat
+add action=masquerade chain=srcnat comment=____MASQUERADE_____ out-interface=\
+    ether1
+add action=redirect chain=dstnat comment=_______NTP_______ dst-address=\
+    192.168.2.1 dst-port=123 protocol=udp src-address=!192.168.2.6 \
+    src-address-list=casa to-ports=53
+add action=redirect chain=dstnat comment=\
+    "_______DNS---TRANSPARENTE __TCP_______" dst-address=!192.168.2.1 \
+    dst-port=53 protocol=udp src-address-list=casa to-ports=53
+add action=redirect chain=dstnat comment=\
+    _______DNS---TRANSPARENTE__UDP________ dst-address=!192.168.2.1 dst-port=\
+    53 protocol=tcp src-address-list=casa to-ports=53
+add action=redirect chain=dstnat comment="_______ICMP TRANSPARENTE_______" \
+    dst-address=!192.168.2.1 dst-address-list=!192.168.2.1 protocol=icmp \
+    src-address-list=casa
+add action=dst-nat chain=dstnat comment=__________SSH___ZYCOO____ dst-port=\
+    446 protocol=tcp to-addresses=192.168.2.3 to-ports=22
+add action=dst-nat chain=dstnat comment=__________SSH___orangepi___ dst-port=\
+    447 protocol=tcp src-address-list=!casa to-addresses=192.168.2.6 \
+    to-ports=22
+add action=dst-nat chain=dstnat comment=__________IAX___ZYCOO dst-port=4569 \
+    protocol=udp src-address-list=!casa to-addresses=192.168.2.3 to-ports=\
+    4569
+add action=dst-nat chain=dstnat comment=__________IAX___orangepi dst-port=\
+    4570 protocol=udp src-address-list=!casa to-addresses=192.168.2.6 \
+    to-ports=4569
+add action=dst-nat chain=dstnat comment="_________INTERFAZ ZYCOO_______" \
+    dst-port=9999 protocol=tcp src-address-list=!casa to-addresses=\
+    192.168.2.3 to-ports=9999
+add action=dst-nat chain=dstnat comment="_______5060______A raspberry____" \
+    dst-address-list=!telefonia dst-port=5060 protocol=udp src-address-list=\
+    !casa to-addresses=192.168.2.6 to-ports=5060
+add action=dst-nat chain=dstnat dst-address-list=!telefonia dst-port=5060 \
+    protocol=tcp src-address-list=!casa to-addresses=192.168.2.6 to-ports=\
+    5060
+add action=dst-nat chain=dstnat comment=_______80____tplink dst-port=80 \
+    protocol=tcp src-address-list=!casa to-addresses=192.168.2.2 to-ports=80
+/ip route
+add distance=1 gateway=192.168.0.1
+/ip service
+set telnet disabled=yes
+set ftp disabled=yes
+set www disabled=yes
+set api disabled=yes
+set api-ssl disabled=yes
+/system clock
+set time-zone-name=America/Bogota
+/system identity
+set name=mosquera
+/system logging
+add action=remote topics=firewall
+add action=remote topics=account
+add action=remote topics=backup
+add action=remote topics=critical
+add action=remote topics=debug
+add action=remote disabled=yes topics="dhcp,info,account,backup,critical,debug\
+    ,e-mail,firewall,system,error,critical,script"
+add action=remote disabled=yes topics=dns
+add action=remote topics=e-mail
+add action=remote topics=system
+add action=remote topics=info
+add action=remote disabled=yes topics=script
+add action=remote topics=error
+/system ntp client
+set enabled=yes primary-ntp=216.239.35.0 secondary-ntp=216.239.35.4
+/system ntp server
+set enabled=yes multicast=yes
+/tool e-mail
+set address=smtp.gmail.com from=wladimirlinuxcali@gmail.com password=\
+    13benedilce port=587 start-tls=yes user=wladimirlinuxcali

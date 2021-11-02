@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+<!-- -->
+<!-- Sipp Rgistration scenario. -->
+<!-- -->
+<scenario name="Basic Sipstone UAC">
+ <!-- ********************************* -->
+ <!-- ***** Send Register packet ****** -->
+ <!-- ********************************* -->
+ <send retrans="500">
+ <![CDATA[
+
+ REGISTER sip:[remote_ip]:[remote_port] SIP/2.0
+ Via: SIP/2.0/[transport] [local_ip]:[local_port];port;branch=branchTag.[call_id]
+ Route: <sip:[remote_ip]:[remote_port];transport=[transport];lr>
+ Max-Forwards: 70
+ From: <sip:[service]@[remote_ip]>;tag=[call_number]
+ To: <sip:[service]@[remote_ip]>
+ Call-ID: [call_id]
+ CSeq: 2 REGISTER
+ User-Agent: sipp-testing-reg
+ Contact: <sip:[service]@[local_ip]:[local_port];ob>
+ Expires: 7200
+ Content-Length: 0
+
+ ]]>
+ </send>
+<!--
+Contact: <sip:[service]@[local_ip]:[local_port]>;transport=[transport]
+-->
+
+<!-- ******************************************** -->
+<!-- ***** Getting 100 message is optional ****** -->
+<!-- ******************************************** -->
+ <recv response="100"
+ optional="true">
+<!-- ***** Must get 401. auth="true" to take the challenge into account ****** -->
+ </recv>
+ <recv response="401" auth="true">
+ </recv>
+<!-- ********************* -->
+<!-- ***** Send Ack ****** -->
+<!-- ********************* -->
+ <send>
+ <![CDATA[
+
+ ACK sip:[service]@[remote_ip]:[remote_port] SIP/2.0
+ Via: SIP/2.0/[transport] [local_ip]:[local_port];port;branch=branchTag.[call_id]
+ From: <sip:[service]@[remote_ip]:[local_port]>;tag=[call_number]
+ To: <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+ Call-ID: [call_id]
+ CSeq: 1 ACK
+ Contact: sip:[service]@[local_ip]:[local_port]
+ Max-Forwards: 70
+ Subject: Performance Test
+ Content-Length: 0
+
+ ]]>
+ </send>
+<!-- ********************************************************************************** -->
+<!-- ***** Send Registration with the authentication, note the user and password ****** -->
+<!-- ********************************************************************************** -->
+ <send retrans="500">
+ <![CDATA[
+
+ REGISTER sip:[remote_ip] SIP/2.0
+ Via: SIP/2.0/[transport] [local_ip]:[local_port];port;branch=branchTag.[call_id]
+ From: <sip:[service]@[remote_ip]:[remote_port]>;tag=[call_number]
+ To: <sip:[service]@[remote_ip]:[remote_port]>[peer_tag_param]
+ Call-ID: [call_id]
+ CSeq: 2 REGISTER
+ User-Agent: sipp-testing-reg
+ Contact: <sip:[service]@[local_ip]:[local_port];ob>
+ [authentication]
+ Expires: 7200
+ Content-Length: 0
+
+ ]]>
+ </send>
+<!-- ******************************************** -->
+<!-- ***** Getting 100 message is optional ****** -->
+<!-- ******************************************** -->
+ <recv response="100"
+ optional="true">
+ </recv>
+<!-- ****************************** -->
+<!-- ***** Should get 200 Ok ****** -->
+<!-- ****************************** -->
+ <recv response="200" rtd="true">
+ </recv>
+</scenario>
